@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export default function (props) {
     console.log(props.inventory);
@@ -10,7 +11,7 @@ export default function (props) {
                 <img className="productImg" src={props.inventory.image} alt={props.inventory.productName}/>
             </div>
             <button onClick={() => props.delete(props.inventory.productid)}>Delete</button>
-            <button onClick={() => props.select(props.inventory)}>Edit</button>
+            <Link to={`/edit/${props.inventory.productid}`}>Edit</Link>
         </div>
     )
 }

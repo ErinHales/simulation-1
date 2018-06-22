@@ -6,6 +6,13 @@ module.exports = {
             res.status(500).send(error);
         })
     },
+    getProduct: (req,res) => {
+        req.app.get("db").get_product().then(response => res.status(200).send(response))
+        .catch(error => {
+            console.log(`ERR: ${error}`);
+            res.status(500).send(error);
+        })
+    },
     createProduct: (req,res) => {
         const {image, productName, price} = req.body;
         req.app.get("db").create_product([image, productName, price]).then(response => res.status(200).send())

@@ -23,7 +23,9 @@ app.post("/api/product", controllers.createProduct);
 
 app.delete("/api/product/:id", controllers.deleteProduct);
 
-app.put("/api/product:id". controllers.editProduct);
+app.put("/api/product:id", controllers.editProduct);
+
+app.get("/api/inventory/:id", controllers.getProduct);
 
 
 

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 export default class Form extends Component {
     constructor() {
@@ -10,20 +11,15 @@ export default class Form extends Component {
             productName: "",
             price: 0,
             id: null,
-            edit: false
+            edit: false,
+            product: {}
         }
     }
 
-    componentDidUpdate(oldInfo) {
-        if(oldInfo.productid !== this.props.productid) {
-            this.setState({
-                image: this.props.image,
-                productName: this.props.productname,
-                price: this.props.price,
-                id: this.props.productid,
-                edit: true
-            })
-        }
+    componentDidUpdate() {
+        //if(user navigates to add view) {
+            // this.reset();
+        // }
     }
 
     updateURL(e) {
@@ -49,14 +45,14 @@ export default class Form extends Component {
             image: "",
             productName: "",
             price: 0,
-            id: null
+            id: null,
+            product: {}
         })
     }
 
     addProduct() {
         const {image, productName, price} = this.state;
         axios.post("/api/product", {image, productName, price}).then(response => {
-            this.props.getRequest();
             this.reset();
         })
     }
@@ -68,20 +64,28 @@ export default class Form extends Component {
         })
     }
 
+    getProduct() {
+        axios.get(`/api/product/${this.state.id}`).then(response => {
+            this.setState({
+                product: response.data
+            })
+        })
+    }
+
     render() {
         return(
             <div className="input">
-                <h1>Product Image</h1>
+                <div className="container">
+                <img src={this.state.image || "http://i63.tinypic.com/2n1b05y.jpg"} alt="Product Image"/>
+                <h1>Image URL</h1>
                 <input type="text" onChange={(e) => this.updateURL(e)}/>
-                <h3>{this.state.image}</h3>
                 <h1>Product Name</h1>
                 <input type="text" onChange={(e) => this.updateName(e)}/>
-                <h3>{this.state.productName}</h3>
                 <h1>Product Price</h1>
-                <input type="text" onChange={(e) => this.updateImg(e)}/>
-                <h3>{this.state.price}</h3>
+                <input type="text" onChange={(e) => this.updateImg(e)}/><br/>
                 <button onClick={() => this.reset()}>Cancel</button>
-                { this.state.edit === true ? <button onClick={() => this.editProduct()}>Save Changes</button> : <button onClick={() => this.addProduct()}>Add to Inventory</button> }
+                { this.state.edit === true ? <Link to="/" onClick={() => this.editProduct()}>Save Changes</Link> : <Link to="/" onClick={() => this.addProduct()}>Add to Inventory</Link> }
+                </div>
             </div>
         )
     }

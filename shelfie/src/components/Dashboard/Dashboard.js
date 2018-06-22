@@ -7,24 +7,43 @@ export default class Dashboard extends Component {
         super();
 
         this.state = {
+            inventory: []
         }
         this.deleteProduct = this.deleteProduct.bind(this);
     }
 
+    componentDidMount() {
+        axios.get("/api/inventory").then(res => {
+          this.setState({
+            inventory: res.data
+          })
+          console.log(res);
+        })
+    }
+
+    getAllProducts() {
+        axios.get(`/api/inventory`).then(res => {
+          this.setState({
+            inventory: res.data
+          })
+        })
+    }
+
     deleteProduct(id) {
         axios.delete(`/api/product/${id}`).then(response => {
-            this.props.getRequest();
+            this.getAllProducts();
         })
     }
 
     render() {
-        var {inventory} = this.props;
+        console.log(this.state.inventory);
+        var {inventory} = this.state;
         var products = [];
+        console.log(products);
         var deleteProduct = this.deleteProduct;
-        var select = this.props.select;
         function displayProducts() {
             inventory.forEach(item => {
-                products.push(<Product inventory={item} delete={deleteProduct} select={select} />)
+                products.push(<Product inventory={item} delete={deleteProduct} />)
             })
         }
         displayProducts();
