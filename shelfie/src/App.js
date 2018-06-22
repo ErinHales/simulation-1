@@ -1,18 +1,63 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Dashboard from "./components/Dashboard/Dashboard.js";
+import Form from "./components/Form/Form.js";
+import Header from "./components/Header/Header.js";
+import axios from "axios";
+import {HashRouter, Route, Link, Switch} from 'react-router-dom';
+import './reset.css';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      inventory: [],
+      selectedProduct: null
+    }
+
+    this.getAllProducts = this.getAllProducts.bind(this);
+    this.selectProduct = this.selectProduct.bind(this);
+  }
+
+  componentDidMount() {
+    axios.get(`/api/inventory`).then(res => {
+      this.setState({
+        inventory: res.data
+      })
+    })
+  }
+
+  getAllProducts() {
+    axios.get(`/api/inventory`).then(res => {
+      this.setState({
+        inventory: res.data
+      })
+    })
+  }
+
+  selectProduct(product) {
+    this.setState({
+      selectedProduct: product
+    })
+  }
+
   render() {
+    console.log(this.state.inventory);
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+       {/* <HashRouter> */}
+        <Header />
+        {/* <div className="links">
+        <Switch>
+          <Route exact path="/" component={Dashboard} />
+          <Route path="/add" component={Form} />
+          <Route path="/edit/:id" component={Form} />
+        </Switch>
+        </div> */}
+        <Dashboard inventory={this.state.inventory} getRequest={this.getAllProducts} select={this.selectProduct} />
+        <Form getRequest={this.getAllProducts} product={this.state.selectedProduct} />
+      {/* </HashRouter> */}
       </div>
     );
   }
