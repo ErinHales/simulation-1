@@ -10,6 +10,7 @@ export default class Dashboard extends Component {
             inventory: []
         }
         this.deleteProduct = this.deleteProduct.bind(this);
+        this.getAllProducts = this.getAllProducts.bind(this);
     }
 
     componentDidMount() {
@@ -17,7 +18,6 @@ export default class Dashboard extends Component {
           this.setState({
             inventory: res.data
           })
-          console.log(res);
         })
     }
 
@@ -36,10 +36,8 @@ export default class Dashboard extends Component {
     }
 
     render() {
-        console.log(this.state.inventory);
         var {inventory} = this.state;
         var products = [];
-        console.log(products);
         var deleteProduct = this.deleteProduct;
         function displayProducts() {
             inventory.forEach(item => {
@@ -48,8 +46,7 @@ export default class Dashboard extends Component {
         }
         displayProducts();
         return(
-            <div>
-                Dashboard
+            <div className="productsContainer">
                 {products}
             </div>
         )

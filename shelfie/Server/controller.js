@@ -7,7 +7,7 @@ module.exports = {
         })
     },
     getProduct: (req,res) => {
-        req.app.get("db").get_product().then(response => res.status(200).send(response))
+        req.app.get("db").get_product(req.params.id).then(response => res.status(200).send(response))
         .catch(error => {
             console.log(`ERR: ${error}`);
             res.status(500).send(error);
@@ -17,7 +17,7 @@ module.exports = {
         const {image, productName, price} = req.body;
         req.app.get("db").create_product([image, productName, price]).then(response => res.status(200).send())
         .catch(error => {
-            console.log(`ERR: ${error}`);
+            console.log(error);
             res.status(500).send(error);
         })
     },
@@ -31,8 +31,8 @@ module.exports = {
     },
     editProduct: (req,res) => {
         const {id} = req.params;
-        const {image, productname, price} = req.body;
-        req.app.get("db").edit_product([id, image, productname, price]).then(response => res.status(200).send())
+        const {image, productName, price} = req.body;
+        req.app.get("db").edit_product([id, image, productName, price]).then(response => res.status(200).send())
         .catch(error => {
             console.log(`ERR: ${error}`);
             res.status(500).send(error);

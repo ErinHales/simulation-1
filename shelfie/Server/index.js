@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(`${__dirname}./../build`));
 
 const port = 4000;
 
@@ -23,7 +24,7 @@ app.post("/api/product", controllers.createProduct);
 
 app.delete("/api/product/:id", controllers.deleteProduct);
 
-app.put("/api/product:id", controllers.editProduct);
+app.put("/api/product/:id", controllers.editProduct);
 
 app.get("/api/inventory/:id", controllers.getProduct);
 
